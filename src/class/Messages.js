@@ -12,16 +12,12 @@ mongoose.connect(config.host, {
 
 class ContenedorMensajes {
 
-    // Metodos 
-
     async save(msj) {
         try {
-            // Guardar en mongo
             const newMsg = new MensajesModel(msj);
             await newMsg.save();
 
             return { message: "Se guardó correctamente el mensaje" };
-
         } catch (err) {
             console.log(err)
         }
