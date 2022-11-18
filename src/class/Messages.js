@@ -29,10 +29,8 @@ class ContenedorMensajes {
     async getAll() {
         try {
             const mensajes = await MensajesModel.find();
-            // Cambiar el return
-            const otro = normalizeMsgs(mensajes);
-
-            return mensajes;
+            
+            return normalizeMsgs(mensajes);
         } catch (error) {
             console.log(error);
         }

@@ -2,7 +2,7 @@ const socket = io();
 
 const productsContainer = document.getElementById('products-container');
 const newMsgForm = document.getElementById('chat-form');
-
+const percentContainer = document.getElementById('percent-container');
 
 // Formulario de mensajes
 
@@ -23,7 +23,7 @@ newMsgForm.addEventListener('submit', (e) => {
 
     socket.emit('new-message', data);
 
-    newMsgForm.reset();
+    e.target.chatMessage.value = '';
 
     // Hacer foco en el input de mensaje
     e.target.chatMessage.focus();
@@ -35,21 +35,55 @@ socket.on('mensajes', (data) => {
 
     chatContainer.innerHTML = '';
 
-    if (data.length === 0) {
+
+    console.log('Array normalizado: ', data)
+
+    const arrayOfMsg = denormalizeData(data);
+
+    if (arrayOfMsg.length === 0) {
         chatContainer.style.display = 'none';
+        return
     } else {
         chatContainer.style.display = 'block';
     }
 
-    data.forEach(message => {
+    console.log('Array sin normalización: ', arrayOfMsg)
+
+    // Invertir el array
+    arrayOfMsg.reverse();
+
+    // Mostramos por consola la longitud de ambos arrays
+    const normalizedLength = JSON.stringify(data).length;
+    const desnormalizedLenght = JSON.stringify(arrayOfMsg).length;
+
+    console.log(`Normalized: ${normalizedLength} bytes`);
+    console.log(`Desnormalized: ${desnormalizedLenght} bytes`);
+
+    const percent = (100 - ((normalizedLength * 100) / desnormalizedLenght)).toFixed(2);
+
+    percent < 0
+        ?
+        percentContainer.innerHTML = '<p>Escribe más mensajes para calcular la compresión</p>'
+        :
+        percentContainer.innerHTML = `<p>Porcentaje de compresión: ${percent}%</p>`;
+
+
+
+    arrayOfMsg.forEach(message => {
 
         const { author, text } = message;
-        const { id, nombre, apellido, edad, alias, avatar } = author;
+        const { id, nombre, apellido, alias, avatar } = author;
 
         chatContainer.innerHTML += `
             <div class="message-container">
-                <p class="message-user">${alias}</p>
-                <p class="message-text">${text}</p>
+                <div class="message-container__child">
+                    <img class="message-avatar" src="${avatar}" alt="${nombre} ${apellido}">
+                    <div>
+                        <p class="message-user">${alias}</p>
+                        <p class="message-text">${text}</p>
+                    </div>
+                </div>
+                <p class="message-email">${id}</p>
             </div>
         `;
     });
@@ -72,6 +106,17 @@ async function renderProducts() {
             </tr>
         `;
     });
+}
+
+function denormalizeData(array) {
+
+    const authorSchema = new normalizr.schema.Entity('author', {}, { idAttribute: 'id' });
+
+    const mensajeSchema = new normalizr.schema.Entity('messages', {
+        author: authorSchema
+    }, { idAttribute: "text" })
+
+    return normalizr.denormalize(array.result, [mensajeSchema], array.entities);
 }
 
 renderProducts();
