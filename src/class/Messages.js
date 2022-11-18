@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 const config = require('../config/config');
 const { MensajesModel } = require('../model/msgModel');
 
+const normalizeMsgs = require('../utils/normalizr');
+
+const util = require('util');
 
 mongoose.connect(config.host, {
     useNewUrlParser: true,
@@ -26,6 +29,9 @@ class ContenedorMensajes {
     async getAll() {
         try {
             const mensajes = await MensajesModel.find();
+            // Cambiar el return
+            const otro = normalizeMsgs(mensajes);
+
             return mensajes;
         } catch (error) {
             console.log(error);

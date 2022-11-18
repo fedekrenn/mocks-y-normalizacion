@@ -1,16 +1,15 @@
 const express = require('express');
 
-
-/* --- Instancias  ---- */
-
 const ContenedorProductos = require('./src/class/Products')
 const ContenedorMensajes = require('./src/class/Messages')
 
-const manejadorProductos = new ContenedorProductos()
-const manejadorMensajes = new ContenedorMensajes()
-
 const routerProductos = require('./src/routes/productos')
 
+
+/* --- Instancias  ---- */
+
+const manejadorProductos = new ContenedorProductos()
+const manejadorMensajes = new ContenedorMensajes()
 
 
 /* ------ Socket.io ------ */
