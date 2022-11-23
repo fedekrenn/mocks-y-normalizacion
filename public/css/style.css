@@ -11,6 +11,32 @@ a {
     text-decoration: none;
 }
 
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header > * {
+    margin: 20px;
+}
+
+header h3{
+    font-weight: 300;
+    font-size: 1.5rem;
+}
+
+header i {
+    font-size: 2rem;
+}
+
+header i:hover {
+    cursor: pointer;
+    transform: scale(1.2);
+    transition: .4s;
+    color: rgb(189, 36, 36);
+}
+
 body {
     background: linear-gradient(90deg, #050727 0%, #000000 100%);
     color: white;

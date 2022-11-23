@@ -5,6 +5,8 @@ const ContenedorMensajes = require('./src/class/Messages')
 
 const routerProductos = require('./src/routes/productos')
 
+const session = require('express-session')
+
 
 /* --- Instancias  ---- */
 
@@ -15,7 +17,8 @@ const manejadorMensajes = new ContenedorMensajes()
 /* ------ Socket.io ------ */
 
 const { Server: HttpServer } = require('http')
-const { Server: Socket } = require('socket.io')
+const { Server: Socket } = require('socket.io');
+const { response } = require('express');
 
 const app = express();
 const httpServer = new HttpServer(app)
@@ -42,18 +45,32 @@ io.on('connection', async socket => {
 
 
 
-/* -------  App  -------- */
+/* --------  App  --------- */
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 
+/* ------ Session  -------- */
+
+app.use(session({
+    secret: 'secreto',
+    resave: true,
+    saveUninitialized: true
+}))
+
 
 /* -------  Rutas  -------- */
 
 app.use('/api/productos-test', routerProductos)
 
+app.get('/login', async (req, res) => {
+    const name = req.query.nameAccess
+    req.session.nameAccess = name
+
+    res.redirect('/pages/products.html')
+})
 
 
 /* -------  Server  -------- */
