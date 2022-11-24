@@ -13,12 +13,12 @@ const session = require('express-session')
 const manejadorProductos = new ContenedorProductos()
 const manejadorMensajes = new ContenedorMensajes()
 
+const authMiddleware = require('./src/middlewares/auth')
 
 /* ------ Socket.io ------ */
 
 const { Server: HttpServer } = require('http')
 const { Server: Socket } = require('socket.io');
-const { response } = require('express');
 
 const app = express();
 const httpServer = new HttpServer(app)
@@ -56,14 +56,17 @@ app.use(express.static('public'));
 
 app.use(session({
     secret: 'secreto',
-    resave: true,
-    saveUninitialized: true
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 60000 }
 }))
 
 
 /* -------  Rutas  -------- */
 
-app.use('/api/productos-test', routerProductos)
+app.use('/api/productos-test', authMiddleware , routerProductos)
+
+// Logueo
 
 app.get('/login', async (req, res) => {
     const name = req.query.nameAccess
@@ -72,6 +75,19 @@ app.get('/login', async (req, res) => {
     res.redirect('/pages/products.html')
 })
 
+// Deslogueo
+
+app.get('/logout', async (req, res) => {
+    req.session.destroy()
+    res.redirect('/')
+})
+
+// Obtener el nombre
+
+app.get('/get-name', async (req, res) => {
+
+    res.send({ nameAccess: req.session.nameAccess })
+})
 
 /* -------  Server  -------- */
 

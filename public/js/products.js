@@ -3,6 +3,7 @@ const socket = io();
 const productsContainer = document.getElementById('products-container');
 const newMsgForm = document.getElementById('chat-form');
 const percentContainer = document.getElementById('percent-container');
+const spanName = document.getElementById('span-name');
 
 // Formulario de mensajes
 
@@ -95,6 +96,15 @@ async function renderProducts() {
 
     const products = await data.json();
 
+    console.log(products);
+
+    // Si el resultado es un 404, redirigir a la página principal
+
+    if (products.status === 404) {
+        window.location.href = '/';
+        return
+    }
+
     productsContainer.innerHTML = '';
 
     products.forEach(product => {
@@ -119,4 +129,11 @@ function denormalizeData(array) {
     return normalizr.denormalize(array.result, [mensajeSchema], array.entities);
 }
 
+async function getName() {
+    const data = await fetch('/get-name');
+    const name = await data.json();
+    spanName.innerHTML = name.nameAccess;
+}
+
+getName()
 renderProducts();
