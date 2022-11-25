@@ -5,6 +5,8 @@ const newMsgForm = document.getElementById('chat-form');
 const percentContainer = document.getElementById('percent-container');
 const spanName = document.getElementById('span-name');
 
+let nombre = '';
+
 // Formulario de mensajes
 
 newMsgForm.addEventListener('submit', (e) => {
@@ -96,10 +98,6 @@ async function renderProducts() {
 
     const products = await data.json();
 
-    console.log(products);
-
-    // Si el resultado es un 404, redirigir a la página principal
-
     if (products.status === 404) {
         window.location.href = '/';
         return
@@ -132,8 +130,27 @@ function denormalizeData(array) {
 async function getName() {
     const data = await fetch('/get-name');
     const name = await data.json();
-    spanName.innerHTML = name.nameAccess;
+
+    return name.nameAccess;
 }
 
-getName()
-renderProducts();
+async function logout() {
+
+    Swal.fire({
+        icon: 'success',
+        title: `Te desloguaste correctamente ${nombre}`,
+        showConfirmButton: false,
+        timer: 2000
+    });
+
+    setInterval(() => {
+        window.location.href = '/';
+    }, 2000);
+}
+
+
+(async function start() {
+    spanName.innerHTML = await getName()
+    nombre = await getName();
+    renderProducts();
+})();
