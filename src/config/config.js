@@ -2,8 +2,10 @@
 const MongoStore = require('connect-mongo')
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true }
 
+require('dotenv').config()
+
 const mongoConfig = {
-    host: 'mongodb+srv://fedekrenn:aE7ETkIwOIZrZW2V@cluster0.r4mk0zv.mongodb.net/?retryWrites=true&w=majority' || 'mongodb://localhost/ecommerce',
+    host: process.env.MONGO_URL,
     options: {
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -15,7 +17,7 @@ const mongoConfig = {
 const sessionConfig = {
 
     store: MongoStore.create({
-        mongoUrl: 'mongodb+srv://fedekrenn:aE7ETkIwOIZrZW2V@cluster0.r4mk0zv.mongodb.net/?retryWrites=true&w=majority',
+        mongoUrl: process.env.MONGO_URL,
         mongoOptions: advancedOptions
     }),
 
