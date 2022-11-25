@@ -6,7 +6,7 @@ const ContenedorMensajes = require('./src/class/Messages')
 const routerProductos = require('./src/routes/productos')
 const routerSesions = require('./src/routes/sesion')
 
-
+const { sessionConfig } = require('./src/config/config');
 
 /* --- Instancias  ---- */
 
@@ -55,24 +55,8 @@ app.use(express.static('public'));
 /* ------ Session  -------- */
 
 const session = require('express-session')
-const MongoStore = require('connect-mongo')
-const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true }
 
-app.use(session({
-
-    store: MongoStore.create({
-        mongoUrl: 'mongodb+srv://fedekrenn:aE7ETkIwOIZrZW2V@cluster0.r4mk0zv.mongodb.net/?retryWrites=true&w=majority',
-        mongoOptions: advancedOptions
-    }),
-
-    secret: 'secreto',
-    resave: false,
-    saveUninitialized: false,
-    rolling: true,
-    cookie: {
-        maxAge: 60000
-    }
-}))
+app.use(session(sessionConfig))
 
 /* -------  Rutas  -------- */
 
