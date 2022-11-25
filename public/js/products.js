@@ -38,7 +38,6 @@ socket.on('mensajes', (data) => {
 
     chatContainer.innerHTML = '';
 
-
     console.log('Array normalizado: ', data)
 
     const arrayOfMsg = denormalizeData(data);
@@ -98,10 +97,7 @@ async function renderProducts() {
 
     const products = await data.json();
 
-    if (products.status === 404) {
-        window.location.href = '/';
-        return
-    }
+    if (products.status === 404) return window.location.href = '/';
 
     productsContainer.innerHTML = '';
 
@@ -144,13 +140,13 @@ async function logout() {
     });
 
     setInterval(() => {
-        window.location.href = '/';
+        window.location.href = '/logout';
     }, 2000);
 }
 
 
 (async function start() {
-    spanName.innerHTML = await getName()
+    spanName.innerHTML = await getName() || '';
     nombre = await getName();
     renderProducts();
 })();

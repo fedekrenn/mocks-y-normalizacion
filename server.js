@@ -4,8 +4,8 @@ const ContenedorProductos = require('./src/class/Products')
 const ContenedorMensajes = require('./src/class/Messages')
 
 const routerProductos = require('./src/routes/productos')
+const routerSesions = require('./src/routes/sesion')
 
-const session = require('express-session')
 
 
 /* --- Instancias  ---- */
@@ -54,40 +54,31 @@ app.use(express.static('public'));
 
 /* ------ Session  -------- */
 
+const session = require('express-session')
+const MongoStore = require('connect-mongo')
+const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true }
+
 app.use(session({
+
+    store: MongoStore.create({
+        mongoUrl: 'mongodb+srv://fedekrenn:aE7ETkIwOIZrZW2V@cluster0.r4mk0zv.mongodb.net/?retryWrites=true&w=majority',
+        mongoOptions: advancedOptions
+    }),
+
     secret: 'secreto',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 60000 }
+    rolling: true,
+    cookie: {
+        maxAge: 60000
+    }
 }))
-
 
 /* -------  Rutas  -------- */
 
-app.use('/api/productos-test', authMiddleware , routerProductos)
+app.use('/api/productos-test', authMiddleware, routerProductos)
+app.use('/', routerSesions)
 
-// Logueo
-
-app.get('/login', async (req, res) => {
-    const name = req.query.nameAccess
-    req.session.nameAccess = name
-
-    res.redirect('/pages/products.html')
-})
-
-// Deslogueo
-
-app.get('/logout', async (req, res) => {
-    req.session.destroy()
-    res.redirect('/')
-})
-
-// Obtener el nombre
-
-app.get('/get-name', async (req, res) => {
-
-    res.send({ nameAccess: req.session.nameAccess })
-})
 
 /* -------  Server  -------- */
 
