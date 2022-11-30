@@ -1,3 +1,10 @@
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcrypt');
+/* Ver si lo de arriba va acá */
+
+
+
 const express = require('express');
 
 const ContenedorProductos = require('./src/class/Products')
@@ -6,14 +13,14 @@ const ContenedorMensajes = require('./src/class/Messages')
 const routerProductos = require('./src/routes/productos')
 const routerSesions = require('./src/routes/sesion')
 
+const authMiddleware = require('./src/middlewares/auth')
+
 const { sessionConfig } = require('./src/config/config');
 
 /* --- Instancias  ---- */
 
 const manejadorProductos = new ContenedorProductos()
 const manejadorMensajes = new ContenedorMensajes()
-
-const authMiddleware = require('./src/middlewares/auth')
 
 /* ------ Socket.io ------ */
 
@@ -43,6 +50,27 @@ io.on('connection', async socket => {
     })
 });
 
+
+/* -----  passport  ------- */
+
+passport.use('login', new LocalStrategy(
+    (username, password, done) => {
+        User.findOne({ username }, (err, user) => {
+
+            if (err) { return done(err); }
+
+            if (!user) return done(null, false, { message: 'Incorrect username.' });
+
+            if (!isValidPassword(password)) return done(null, false, { message: 'Incorrect password.' });
+
+            return done(null, user);
+        });
+    }
+));
+
+function isValidPassword(user, password) {
+    return bcrypt.compareSync(password, user.password);
+}
 
 
 /* --------  App  --------- */
