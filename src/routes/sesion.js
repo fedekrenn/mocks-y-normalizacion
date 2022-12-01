@@ -1,14 +1,20 @@
 const express = require('express');
 const { Router } = express
 
+const mainMiddleware = require('../middlewares/main')
+
 const routerSesions = Router()
 
+
+routerSesions.get('/', mainMiddleware, async (req, res) => {
+    res.redirect('/pages/products.html')
+})
+    
 // Logueo
 
-routerSesions.get('/login', async (req, res) => {
-    const name = req.query.nameAccess
+routerSesions.post('/login', async (req, res) => {
+    const name = req.body.nameAccess
     req.session.nameAccess = name
-
     res.redirect('/pages/products.html')
 })
 

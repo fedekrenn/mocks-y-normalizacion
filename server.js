@@ -1,6 +1,5 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcrypt');
 /* Ver si lo de arriba va acá */
 
 
@@ -51,7 +50,36 @@ io.on('connection', async socket => {
 });
 
 
+
+
+
+/* --------  App  --------- */
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
+
+
+/* ------ Session  -------- */
+
+const session = require('express-session')
+
+app.use(session(sessionConfig))
+
+
+
+
+
+
+
+
+
 /* -----  passport  ------- */
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 
 passport.use('login', new LocalStrategy(
     (username, password, done) => {
@@ -68,23 +96,9 @@ passport.use('login', new LocalStrategy(
     }
 ));
 
-function isValidPassword(user, password) {
-    return bcrypt.compareSync(password, user.password);
-}
 
 
-/* --------  App  --------- */
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
-
-
-/* ------ Session  -------- */
-
-const session = require('express-session')
-
-app.use(session(sessionConfig))
 
 /* -------  Rutas  -------- */
 

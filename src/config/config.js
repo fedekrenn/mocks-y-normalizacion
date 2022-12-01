@@ -26,6 +26,8 @@ const sessionConfig = {
     saveUninitialized: false,
     rolling: true,
     cookie: {
+        httpOnly: false,
+        secure: false,
         maxAge: 60000
     }
 }
