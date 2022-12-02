@@ -1,5 +1,11 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+
+const { isValidPassword } = require('./src/utils/handlePass');
+
+const ContenedorSesiones = require('./src/class/Sessions');
+
+const manejadorSesiones = new ContenedorSesiones();
 /* Ver si lo de arriba va acá */
 
 
@@ -82,19 +88,46 @@ app.use(passport.session());
 
 
 passport.use('login', new LocalStrategy(
-    (username, password, done) => {
-        User.findOne({ username }, (err, user) => {
+    {
+        usernameField: 'email',
+        passwordField: 'password',
+        passReqToCallback: true,
+    },
+    async (req, email, password, done) => {
+        try {
+            const user = await manejadorSesiones.findUser(email);
 
-            if (err) { return done(err); }
+            if (!user) return done(null, false)
 
-            if (!user) return done(null, false, { message: 'Incorrect username.' });
+            if (!isValidPassword(user, password)) return done(null, false)
 
-            if (!isValidPassword(password)) return done(null, false, { message: 'Incorrect password.' });
-
-            return done(null, user);
-        });
+            return done(null, user)
+        } catch (err) {
+            return done(err)
+        }
     }
 ));
+
+// Serialize
+passport.serializeUser((user, done) => {
+    done(null, user.email)
+})
+
+// Deserialize
+passport.deserializeUser(async (email, done) => {
+    try {
+        const user = await manejadorSesiones.findUser(email);
+        done(null, user)
+    } catch (err) {
+        done(err)
+    }
+})
+
+
+
+
+
+
 
 
 

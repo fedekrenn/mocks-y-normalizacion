@@ -5,6 +5,6 @@ const Schema = new mongoose.Schema({
     password: { type: String, required: true }
 });
 
-const SessModel = mongoose.model("sessions", Schema);
+const SessModel = mongoose.model("accounts", Schema);
 
 module.exports = { SessModel };
