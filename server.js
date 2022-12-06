@@ -1,14 +1,4 @@
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-
-const { isValidPassword } = require('./src/utils/handlePass');
-
-const ContenedorSesiones = require('./src/class/Sessions');
-
-const manejadorSesiones = new ContenedorSesiones();
-/* Ver si lo de arriba va acá */
-
-
+/* --- Importaciones  ---- */
 
 const express = require('express');
 
@@ -22,10 +12,16 @@ const sessionMiddleware = require('./src/middlewares/session')
 
 const { sessionConfig } = require('./src/config/config');
 
+const passport = require('./src/utils/passport');
+
+
+
 /* --- Instancias  ---- */
 
 const manejadorProductos = new ContenedorProductos()
 const manejadorMensajes = new ContenedorMensajes()
+
+
 
 /* ------ Socket.io ------ */
 
@@ -35,7 +31,6 @@ const { Server: Socket } = require('socket.io');
 const app = express();
 const httpServer = new HttpServer(app)
 const io = new Socket(httpServer)
-
 
 
 io.on('connection', async socket => {
@@ -57,13 +52,12 @@ io.on('connection', async socket => {
 
 
 
-
-
 /* --------  App  --------- */
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
+
 
 
 /* ------ Session  -------- */
@@ -74,78 +68,10 @@ app.use(session(sessionConfig))
 
 
 
-
-
-
-
-
-
 /* -----  passport  ------- */
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-
-
-passport.use('login', new LocalStrategy(
-    {
-        usernameField: 'email',
-        passwordField: 'password',
-        passReqToCallback: true,
-    },
-    async (req, email, password, done) => {
-        try {
-            const user = await manejadorSesiones.findUser(email);
-            
-            if (!user) return done(null, false)
-            
-            if (!isValidPassword(user, password)) return done(null, false)
-
-            return done(null, user)
-        } catch (err) {
-            return done(err)
-        }
-    }
-));
-
-passport.use('singup', new LocalStrategy({
-    usernameField: 'email',
-    passwordField: 'password',
-    passReqToCallback: true,
-},
-    async (req, email, password, done) => {
-        try {
-            const user = await manejadorSesiones.createUser({email, password});
-
-            if (user.err) return done(null, false)
-
-            return done(null, user)
-        } catch (err) {
-            return done(err)
-        }
-    }
-));
-
-
-
-
-
-// Serialize
-passport.serializeUser((email, done) => {
-    done(null, email);
-})
-
-// Deserialize
-passport.deserializeUser((email, done) => {
-    done(null, email);
-})
-
-
-
-
-
-
-
 
 
 
@@ -154,6 +80,7 @@ passport.deserializeUser((email, done) => {
 
 app.use('/api/productos-test', sessionMiddleware, routerProductos)
 app.use('/', routerSesions)
+
 
 
 /* -------  Server  -------- */

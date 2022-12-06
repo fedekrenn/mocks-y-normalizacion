@@ -12,17 +12,17 @@ a {
     color: inherit;
 }
 
-header{
+header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-header > * {
+header>* {
     margin: 20px;
 }
 
-header h3{
+header h3 {
     font-weight: 300;
     font-size: 1.5rem;
 }
@@ -44,24 +44,23 @@ body {
 }
 
 h1 {
-    text-align: left;
-    margin: 30px 0 30px 60px;
-
+    text-align: center;
+    margin: 30px;
 }
 
-h2{
+h2 {
     text-align: center;
     font-style: italic;
     margin: 30px 0;
 }
 
-hr{
+hr {
     width: 80%;
     display: block;
     margin: 0 auto;
 }
 
-section{
+section {
     margin: 50px 0;
 }
 
@@ -72,18 +71,18 @@ form {
     align-items: center;
 }
 
-#product-form label{
+#product-form label {
     margin: 15px 0;
 }
 
-#product-form{
+#product-form {
     border: 1px solid white;
     width: 340px;
     margin: 0 auto;
     padding: 20px;
 }
 
-input[type="color"]{
+input[type="color"] {
     width: 40px;
     height: 40px;
 }
@@ -126,6 +125,17 @@ img {
     margin: 0 auto;
 }
 
+label {
+    display: block;
+    margin: 20px 0 5px 0;
+}
+
+.btn__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .btn {
     background: #ffffff;
     color: #000000;
@@ -134,10 +144,16 @@ img {
     border-radius: 5px;
     cursor: pointer;
     display: block;
-    margin: 20px auto;
+    margin: 20px 5px;
     width: 100px;
     text-align: center;
     font-size: 13px;
+}
+
+.active {
+    background: #170a3b;
+    color: #ffffff;
+    border: 1px solid #ffffff;
 }
 
 /* Hacer que en hover tenga profundidad */
@@ -150,7 +166,7 @@ img {
 
 /* Chat */
 
-#chat-form{
+#chat-form {
     width: 340px;
     border: 1px solid white;
     display: flex;
@@ -160,27 +176,27 @@ img {
     padding: 20px;
 }
 
-#chat-form label{
+#chat-form label {
     margin: 10px 0;
 }
 
-.chat__hr{
+.chat__hr {
     margin: 20px;
 }
 
-.chat-container{
+.chat-container {
     display: flex;
     justify-content: space-evenly;
     align-items: flex-start;
 }
 
-input#chatTextMsg{
+input#chatTextMsg {
     width: 200px;
     height: 30px;
     margin: 10px 0;
 }
 
-#messages{
+#messages {
     height: 400px;
     overflow-y: scroll;
 }
@@ -197,12 +213,12 @@ input#chatTextMsg{
     border-radius: 0px 20px 20px 20px;
 }
 
-.message-container__child{
+.message-container__child {
     display: flex;
     align-items: center;
 }
 
-.message-container__child img{
+.message-container__child img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -211,31 +227,50 @@ input#chatTextMsg{
     margin: 0;
 }
 
-.message-avatar{
+.message-avatar {
     border-radius: 50%;
 }
 
-.message-email{
+.message-email {
     text-align: right;
     font-size: 10px;
 }
 
-.message-user{
+.message-user {
     font-weight: bold;
     margin: 5px;
 }
 
-.message-text{
+.message-text {
     margin: 5px;
 }
 
-.show-or-hide{
+.show-or-hide {
     display: none;
 }
 
-#percent-container{
+#percent-container {
     font-size: 20px;
     text-align: center;
     width: 500px;
     margin: 30px auto;
+}
+
+.error {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.error h1,
+.error p {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.error .btn {
+    display: block;
+    margin: 50px auto;
 }

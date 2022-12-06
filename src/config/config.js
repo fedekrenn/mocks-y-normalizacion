@@ -28,7 +28,8 @@ const sessionConfig = {
     cookie: {
         httpOnly: false,
         secure: false,
-        maxAge: 60000
+        // 10 minutos
+        maxAge: 600000  
     }
 }
 
