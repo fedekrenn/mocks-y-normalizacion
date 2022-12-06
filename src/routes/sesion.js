@@ -5,49 +5,42 @@ const passport = require('passport');
 
 const mainMiddleware = require('../middlewares/main')
 
-const ContenedorSesiones = require('../class/Sessions');
-
-const manejadorSesiones = new ContenedorSesiones()
-
 const routerSesions = Router()
 
 
 // Ruta principal
-routerSesions.get('/', mainMiddleware, async (req, res) => {
-    res.redirect('/pages/products.html')
+routerSesions.get('/', async (req, res) => {
+    // Corregir esto!
+    res.redirect('/products')
 })
 
 // Ruta de login
 routerSesions.post('/login', passport.authenticate('login', {
-        successRedirect: '/pages/products.html',
-        failureRedirect: '/pages/login-error.html',
-        passReqToCallback: true
-    })
+    successRedirect: '/products',
+    failureRedirect: '/pages/login-error.html',
+    passReqToCallback: true
+})
 )
 
 // Ruta de registro
-routerSesions.post('/register', async (req, res) => {
-
-    const { email, password } = req.body
-
-    const user = await manejadorSesiones.createUser({ email, password })
-
-    if (user.err) {
-        // Acá tengo que crear una page en el front para error en la creación de usuario y redirijirlo
-        res.status(400).json({ error: user.err })
-    } else {
-        res.redirect('/pages/products.html')
-    }
+routerSesions.post('/register', passport.authenticate('singup', {
+    successRedirect: '/products',
+    failureRedirect: '/pages/register-error.html',
+    passReqToCallback: true
 })
+)
 
-
-
+// Ruta de productos
+routerSesions.get('/products', mainMiddleware, async (req, res) => {
+    res.redirect('/pages/products.html')
+})
 
 
 // Deslogueo
 
-routerSesions.get('/logout', async (req, res) => {
+routerSesions.get('/logout', (req, res) => {
     req.session.destroy()
+    // req.logout()
     res.redirect('/')
 })
 

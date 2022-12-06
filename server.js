@@ -18,8 +18,6 @@ const ContenedorMensajes = require('./src/class/Messages')
 const routerProductos = require('./src/routes/productos')
 const routerSesions = require('./src/routes/sesion')
 
-const authMiddleware = require('./src/middlewares/auth')
-
 const { sessionConfig } = require('./src/config/config');
 
 /* --- Instancias  ---- */
@@ -108,19 +106,38 @@ passport.use('login', new LocalStrategy(
     }
 ));
 
+passport.use('singup', new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'password',
+    passReqToCallback: true,
+},
+    async (req, email, password, done) => {
+        try {
+            const user = await manejadorSesiones.createUser({email, password});
+
+            console.log(user);
+
+            if (user.err) return done(null, false)
+
+            return done(null, user)
+        } catch (err) {
+            return done(err)
+        }
+    }
+));
+
+
+
+
+
 // Serialize
-passport.serializeUser((user, done) => {
-    done(null, user.email)
+passport.serializeUser((email, done) => {
+    done(null, email);
 })
 
 // Deserialize
-passport.deserializeUser(async (email, done) => {
-    try {
-        const user = await manejadorSesiones.findUser(email);
-        done(null, user)
-    } catch (err) {
-        done(err)
-    }
+passport.deserializeUser((email, done) => {
+    done(null, email);
 })
 
 
@@ -135,7 +152,7 @@ passport.deserializeUser(async (email, done) => {
 
 /* -------  Rutas  -------- */
 
-app.use('/api/productos-test', authMiddleware, routerProductos)
+app.use('/api/productos-test', routerProductos)
 app.use('/', routerSesions)
 
 

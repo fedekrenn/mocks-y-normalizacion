@@ -15,7 +15,7 @@ class ContenedorSesiones {
 
     async findUser(user) {
         try {
-            const userFound = await SessModel.findOne({ user });
+            const userFound = await SessModel.findOne({ email: user });
             return userFound;
         } catch (err) {
             console.log(err)
@@ -25,6 +25,9 @@ class ContenedorSesiones {
     async createUser(user) {
         try {
             const isValidUser = await SessModel.findOne({ email: user.email });
+
+            console.log(isValidUser);
+
             if (isValidUser) {
                 return { err: "El usuario ya existe" }
             } else {

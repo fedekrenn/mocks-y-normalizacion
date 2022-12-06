@@ -1,5 +1,5 @@
 const mainMiddleware = (req, res, next) => {
-    if (!req.session.nameAccess) {
+    if (!req.isAuthenticated()) {
         res.redirect('/pages/login.html')
     } else {
         next()
