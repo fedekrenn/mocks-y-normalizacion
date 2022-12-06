@@ -1,8 +1,8 @@
 const mainMiddleware = (req, res, next) => {
-    if (!req.isAuthenticated()) {
-        res.redirect('/pages/login.html')
-    } else {
+    if (req.isAuthenticated()) {
         next()
+    } else {
+        res.redirect('/pages/login.html')
     }
 }
 

@@ -26,15 +26,13 @@ class ContenedorSesiones {
         try {
             const isValidUser = await SessModel.findOne({ email: user.email });
 
-            console.log(isValidUser);
-
             if (isValidUser) {
                 return { err: "El usuario ya existe" }
             } else {
                 user.password = createHash(user.password);
                 const newUser = new SessModel(user);
                 await newUser.save();
-                return { message: "Se guardó correctamente el usuario" };
+                return newUser;
             }
         } catch (err) {
             console.log(err)

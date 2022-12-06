@@ -18,6 +18,8 @@ const ContenedorMensajes = require('./src/class/Messages')
 const routerProductos = require('./src/routes/productos')
 const routerSesions = require('./src/routes/sesion')
 
+const sessionMiddleware = require('./src/middlewares/session')
+
 const { sessionConfig } = require('./src/config/config');
 
 /* --- Instancias  ---- */
@@ -94,9 +96,9 @@ passport.use('login', new LocalStrategy(
     async (req, email, password, done) => {
         try {
             const user = await manejadorSesiones.findUser(email);
-
+            
             if (!user) return done(null, false)
-
+            
             if (!isValidPassword(user, password)) return done(null, false)
 
             return done(null, user)
@@ -114,8 +116,6 @@ passport.use('singup', new LocalStrategy({
     async (req, email, password, done) => {
         try {
             const user = await manejadorSesiones.createUser({email, password});
-
-            console.log(user);
 
             if (user.err) return done(null, false)
 
@@ -152,7 +152,7 @@ passport.deserializeUser((email, done) => {
 
 /* -------  Rutas  -------- */
 
-app.use('/api/productos-test', routerProductos)
+app.use('/api/productos-test', sessionMiddleware, routerProductos)
 app.use('/', routerSesions)
 
 

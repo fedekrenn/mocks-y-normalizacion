@@ -3,20 +3,20 @@ const { Router } = express
 
 const passport = require('passport');
 
-const mainMiddleware = require('../middlewares/main')
+const authMiddleware = require('../middlewares/auth')
 
 const routerSesions = Router()
 
 
 // Ruta principal
-routerSesions.get('/', async (req, res) => {
-    // Corregir esto!
-    res.redirect('/products')
+routerSesions.get('/', authMiddleware, async (req, res) => {
+    req.session.nameAccess = req.user.email
+    res.redirect('/pages/products.html')
 })
 
 // Ruta de login
 routerSesions.post('/login', passport.authenticate('login', {
-    successRedirect: '/products',
+    successRedirect: '/',
     failureRedirect: '/pages/login-error.html',
     passReqToCallback: true
 })
@@ -24,24 +24,22 @@ routerSesions.post('/login', passport.authenticate('login', {
 
 // Ruta de registro
 routerSesions.post('/register', passport.authenticate('singup', {
-    successRedirect: '/products',
+    successRedirect: '/',
     failureRedirect: '/pages/register-error.html',
     passReqToCallback: true
 })
 )
 
-// Ruta de productos
-routerSesions.get('/products', mainMiddleware, async (req, res) => {
-    res.redirect('/pages/products.html')
-})
-
-
 // Deslogueo
+routerSesions.get('/logout', (req, res, next) => {
 
-routerSesions.get('/logout', (req, res) => {
-    req.session.destroy()
-    // req.logout()
-    res.redirect('/')
+    req.logout(function (err) {
+
+        if (err) return next(err);
+
+        req.session.destroy()
+        res.redirect("/");
+    });
 })
 
 // Obtener el nombre
