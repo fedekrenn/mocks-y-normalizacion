@@ -7,6 +7,7 @@ const ContenedorMensajes = require('./src/class/Messages')
 
 const routerProductos = require('./src/routes/productos')
 const routerSesions = require('./src/routes/sesion')
+const routerInfo = require('./src/routes/info')
 
 const sessionMiddleware = require('./src/middlewares/session')
 
@@ -14,6 +15,12 @@ const { sessionConfig } = require('./src/config/config');
 
 const passport = require('./src/utils/passport');
 
+/* --- Procesos por Yarg  ---- */
+
+const yargs = require('yargs/yargs')(process.argv.slice(2))
+const args = yargs.default({port: 8080}).alias({port: 'p'}).argv
+
+const PORT = args.port
 
 
 /* --- Instancias  ---- */
@@ -80,12 +87,12 @@ app.use(passport.session());
 
 app.use('/api/productos-test', sessionMiddleware, routerProductos)
 app.use('/', routerSesions)
+app.use('/', routerInfo)
 
 
 
 /* -------  Server  -------- */
 
-const PORT = process.env.PORT || 8080;
 
 const server = httpServer.listen(PORT, () => console.log(`Servidor http escuchando en el puerto ${server.address().port}`));
 server.on('error', error => console.log(`Error en servidor ${error}`));
