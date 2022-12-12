@@ -8,6 +8,7 @@ const ContenedorMensajes = require('./src/class/Messages')
 const routerProductos = require('./src/routes/productos')
 const routerSesions = require('./src/routes/sesion')
 const routerInfo = require('./src/routes/info')
+const routerChildProcess = require('./src/routes/childProcess')
 
 const sessionMiddleware = require('./src/middlewares/session')
 
@@ -88,6 +89,7 @@ app.use(passport.session());
 app.use('/api/productos-test', sessionMiddleware, routerProductos)
 app.use('/', routerSesions)
 app.use('/', routerInfo)
+app.use('/api', routerChildProcess)
 
 
 
