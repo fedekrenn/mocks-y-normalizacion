@@ -20,6 +20,3 @@ process.on('message', (message) => {
     const countArrayNumbersObj = randomNumbers(cantidad)
     process.send(countArrayNumbersObj)
 })
-
-
-

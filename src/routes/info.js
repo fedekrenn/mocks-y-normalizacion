@@ -10,6 +10,7 @@ routerInfo.get('/info', (req, res) => {
     res.send({
         argumentos: args,
         sistemaOperativo: process.platform,
+        numeroDeProcesadores: require('os').cpus().length,
         versionNode: process.version,
         usoDeMemoria: process.memoryUsage().rss,
         pathDeEjecucion: process.execPath,
