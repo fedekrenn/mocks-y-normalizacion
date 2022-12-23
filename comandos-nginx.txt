@@ -1,0 +1,20 @@
+"node server.js -p 8082" entrará al puerto 8082, si no pasamos el puerto ("node server.js") entrará por defecto en el puerto 8080
+
+"node server.js -m cluster" entrará en modo cluster, de no pasar el modo ("node server.js") entrará por defecto en modo fork
+
+Se pueden combinar ambos para levantar el server, por ejemplo "node server.j -m fork -p 8084"
+
+NODEMON:
+
+Para ejecutar el servidor por nodemon nodemon server.js -m cluster p 8084"
+
+FOREVER:
+
+Para levantar el servidor por forever "forever start server.js -m cluster -p 8084" y si quiero habilitar el modo escucha agrego --watch
+
+PM2:
+
+Levantamos server en modo fork "pm2 start server.js --name="Servidor1" --watch"
+
+Levantamos server en modo cluster"pm2 start server.js --name="Servidor2" --watch -i max"
+

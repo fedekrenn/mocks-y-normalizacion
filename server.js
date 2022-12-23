@@ -17,48 +17,20 @@ const { sessionConfig } = require('./src/config/config');
 const passport = require('./src/utils/passport');
 
 
-
-
-
-
-
 // Clusters
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
 
 
 
-
-
-
-
 /* --- Procesos por Yarg  ---- */
 
-/* Tomando con base el proyecto que vamos realizando, agregar un parámetro
-más en la ruta de comando que permita ejecutar al servidor en modo fork o
-cluster. Dicho parámetro será 'FORK' en el primer caso y 'CLUSTER' en el
-segundo, y de no pasarlo, el servidor iniciará en modo fork. 
-
-const yargs = require('yargs/yargs')(process.argv.slice(2))
-const args = yargs.default({ port: 8080 }).alias({ port: 'p' }).argv
-
-const PORT = args.port
-
-COMANDOS: 
-tasklist /fi "imagename eq node.exe"
-taskkill /pid 13872 /f
-
-
-*/
 
 const yargs = require('yargs/yargs')(process.argv.slice(2))
 const args = yargs.default({ port: 8080, mode: 'fork' }).alias({ port: 'p', mode: 'm' }).argv
 
 const PORT = args.port
-const MODE = args.mode
-
-
-
+const MODE = args.mode.toUpperCase()
 
 
 /* --- Instancias  ---- */
@@ -68,8 +40,9 @@ const manejadorMensajes = new ContenedorMensajes()
 
 /* --- Cluster  ---- */
 
-if (cluster.isMaster) {
-    console.log(numCPUs)
+if (MODE === 'CLUSTER' && cluster.isMaster) {
+    console.log('Número de CPUs: ', numCPUs)
+    console.log("Modo: ", MODE)
     console.log(`Master ${process.pid} is running`);
 
     // Fork workers.
@@ -83,9 +56,7 @@ if (cluster.isMaster) {
     });
 
 } else {
-
     console.log(`Worker ${process.pid} started`);
-    console.log("MODE: ", MODE)
 
     /* ------ Socket.io ------ */
 
@@ -154,5 +125,4 @@ if (cluster.isMaster) {
 
     const server = httpServer.listen(PORT, () => console.log(`Servidor http escuchando en el puerto ${server.address().port}`));
     server.on('error', error => console.log(`Error en servidor ${error}`));
-
 }
