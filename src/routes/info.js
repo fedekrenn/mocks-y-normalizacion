@@ -1,11 +1,16 @@
 const express = require('express');
 const { Router } = express
+const compression = require('compression')
+
+const { logger } = require('../utils/logger')
 
 const args = require('yargs/yargs')(process.argv.slice(2)).argv
 
 const routerInfo = Router()
 
-routerInfo.get('/info', (req, res) => {
+routerInfo.get('/info', compression(), (req, res) => {
+
+    logger.info(`Ruta: ${req.originalUrl} - Método: ${req.method}`)
 
     res.send({
         argumentos: args,

@@ -1,5 +1,4 @@
 /* --- Importaciones  ---- */
-
 const express = require('express');
 
 const ContenedorProductos = require('./src/class/Products')
@@ -9,12 +8,13 @@ const routerProductos = require('./src/routes/productos')
 const routerSesions = require('./src/routes/sesion')
 const routerInfo = require('./src/routes/info')
 const routerChildProcess = require('./src/routes/childProcess')
+const passport = require('./src/utils/passport');
 
 const sessionMiddleware = require('./src/middlewares/session')
 
 const { sessionConfig } = require('./src/config/config');
 
-const passport = require('./src/utils/passport');
+const { loggerWarn } = require('./src/utils/logger')
 
 
 // Clusters
@@ -22,9 +22,7 @@ const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
 
 
-
 /* --- Procesos por Yarg  ---- */
-
 
 const yargs = require('yargs/yargs')(process.argv.slice(2))
 const args = yargs.default({ port: 8080, mode: 'fork' }).alias({ port: 'p', mode: 'm' }).argv
@@ -110,7 +108,6 @@ if (MODE === 'CLUSTER' && cluster.isMaster) {
 
 
 
-
     /* -------  Rutas  -------- */
 
     app.use('/api/productos-test', sessionMiddleware, routerProductos)
@@ -118,7 +115,12 @@ if (MODE === 'CLUSTER' && cluster.isMaster) {
     app.use('/', routerInfo)
     app.use('/api', routerChildProcess)
 
+    app.get('*', (req, res) => {
 
+        loggerWarn.warn(`Ruta: ${req.originalUrl} - Método: ${req.method} - No implementada`)
+
+        res.status(404).send({ error: -2, descripcion: `ruta ${req.originalUrl} método ${req.method} no implementada` })
+    })
 
     /* -------  Server  -------- */
 
