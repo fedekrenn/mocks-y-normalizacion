@@ -54,7 +54,7 @@ if (MODE === 'CLUSTER' && cluster.isMaster) {
     });
 
 } else {
-    console.log(`Worker ${process.pid} started`);
+    console.log(`Worker ${process.pid} started in mode ${MODE}`);
 
     /* ------ Socket.io ------ */
 
