@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const { mongoConfig } = require('../config/config');
 const { MensajesModel } = require('../model/msgModel');
 
+const { loggerError } = require('../utils/logger');
+
 const normalizeMsgs = require('../utils/normalizr');
 
 mongoose.connect(mongoConfig.host, {
@@ -20,17 +22,17 @@ class ContenedorMensajes {
 
             return { message: "Se guardó correctamente el mensaje" };
         } catch (err) {
-            console.log(err)
+            loggerError.error(err);
         }
     }
 
     async getAll() {
         try {
             const mensajes = await MensajesModel.find();
-            
+
             return normalizeMsgs(mensajes);
         } catch (error) {
-            console.log(error);
+            loggerError.error(error);
         }
     }
 }

@@ -1,4 +1,5 @@
 const { faker } = require('@faker-js/faker');
+const { loggerError } = require('../utils/logger');
 
 class ContenedorProductos {
 
@@ -16,7 +17,7 @@ class ContenedorProductos {
 
             return productos
         } catch (error) {
-            console.log(error);
+            loggerError.error(error);
         }
     }
 }

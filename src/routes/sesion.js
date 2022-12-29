@@ -1,6 +1,6 @@
 const express = require('express');
 const { Router } = express
-
+const { loggerError } = require('../utils/logger');
 const passport = require('passport');
 
 const authMiddleware = require('../middlewares/auth')
@@ -35,7 +35,10 @@ routerSesions.get('/logout', (req, res, next) => {
 
     req.logout(function (err) {
 
-        if (err) return next(err);
+        if (err) {
+            loggerError.error(err)
+            return next(err)
+        };
 
         req.session.destroy()
         res.redirect("/");

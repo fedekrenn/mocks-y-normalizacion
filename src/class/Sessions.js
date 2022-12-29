@@ -4,11 +4,13 @@ const { mongoConfig } = require('../config/config');
 const { SessModel } = require('../model/sessModel');
 const { createHash } = require('../utils/handlePass');
 
+const { loggerError } = require('../utils/logger');
+
 mongoose.connect(mongoConfig.host, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }, (err) => {
-    if (err) console.log(err);
+    if (err) loggerError.error(err);
 });
 
 class ContenedorSesiones {
@@ -18,7 +20,7 @@ class ContenedorSesiones {
             const userFound = await SessModel.findOne({ email: user });
             return userFound;
         } catch (err) {
-            console.log(err)
+            loggerError.error(err);
         }
     }
 
@@ -27,6 +29,7 @@ class ContenedorSesiones {
             const isValidUser = await SessModel.findOne({ email: user.email });
 
             if (isValidUser) {
+                loggerError.error("El usuario ya existe");
                 return { err: "El usuario ya existe" }
             } else {
                 user.password = createHash(user.password);
@@ -35,7 +38,7 @@ class ContenedorSesiones {
                 return newUser;
             }
         } catch (err) {
-            console.log(err)
+            loggerError.error(err);
         }
     }
 }
