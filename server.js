@@ -27,7 +27,7 @@ const numCPUs = require('os').cpus().length;
 const yargs = require('yargs/yargs')(process.argv.slice(2))
 const args = yargs.default({ port: 8080, mode: 'fork' }).alias({ port: 'p', mode: 'm' }).argv
 
-const PORT = args.port
+const PORT = process.env.PORT || args.port
 const MODE = args.mode.toUpperCase()
 
 
