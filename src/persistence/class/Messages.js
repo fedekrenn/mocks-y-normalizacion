@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
-const { mongoConfig } = require('../config/config');
+const { mongoConfig } = require('../../config/config');
 const { MensajesModel } = require('../model/msgModel');
 
-const { loggerError } = require('../utils/logger');
+const { loggerError } = require('../../utils/logger');
 
-const normalizeMsgs = require('../utils/normalizr');
+const normalizeMsgs = require('../../utils/normalizr');
 
 mongoose.connect(mongoConfig.host, {
     useNewUrlParser: true,

@@ -1,5 +1,5 @@
-const ContenedorProductos = require("../class/Products");
-const ContenedorMensajes = require("../class/Messages");
+const ContenedorProductos = require("../persistence/class/Products");
+const ContenedorMensajes = require("../persistence/class/Messages");
 
 /* --- Instancias  ---- */
 

@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
-const { mongoConfig } = require('../config/config');
+const { mongoConfig } = require('../../config/config');
 const { SessModel } = require('../model/sessModel');
-const { createHash } = require('../utils/handlePass');
+const { createHash } = require('../../utils/handlePass');
 
-const { loggerError } = require('../utils/logger');
+const { loggerError } = require('../../utils/logger');
 
 mongoose.connect(mongoConfig.host, {
     useNewUrlParser: true,
@@ -44,4 +44,3 @@ class ContenedorSesiones {
 }
 
 module.exports = ContenedorSesiones;
-

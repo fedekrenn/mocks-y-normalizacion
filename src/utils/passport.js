@@ -1,6 +1,6 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const ContenedorSesiones = require('../class/Sessions');
+const ContenedorSesiones = require('../persistence/class/Sessions');
 
 const { isValidPassword } = require('./handlePass');
 

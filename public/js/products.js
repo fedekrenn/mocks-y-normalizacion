@@ -14,7 +14,7 @@ newMsgForm.addEventListener('submit', (e) => {
 
     const data = {
         author: {
-            id: e.target.chatUserName.value,
+            id: nombre,
             nombre: e.target.nameUser.value,
             apellido: e.target.lastNameUser.value,
             edad: parseInt(e.target.ageUser.value),

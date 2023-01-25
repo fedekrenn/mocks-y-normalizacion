@@ -1,21 +1,18 @@
-/* --- Importaciones  ---- */
+/* --- Imports  ---- */
 const express = require("express");
 
 const routerProductos = require("./src/routes/productos");
 const routerSesions = require("./src/routes/sesion");
 const routerInfo = require("./src/routes/info");
-const routerChildProcess = require("./src/routes/childProcess");
+const routerRandoms = require("./src/routes/randoms");
 const passport = require("./src/utils/passport");
-const chat = require("./src/controller/chatSocket");
+const chat = require("./src/utils/chatSocket");
 
 const sessionMiddleware = require("./src/middlewares/session");
 
 const { sessionConfig } = require("./src/config/config");
 const { loggerWarn } = require("./src/utils/logger");
 
-// Clusters
-const cluster = require("cluster");
-const numCPUs = require("os").cpus().length;
 
 /* --- Procesos por Yarg  ---- */
 
@@ -28,6 +25,9 @@ const PORT = process.env.PORT || args.port;
 const MODE = args.mode.toUpperCase();
 
 /* --- Cluster  ---- */
+
+const cluster = require("cluster");
+const numCPUs = require("os").cpus().length;
 
 if (MODE === "CLUSTER" && cluster.isMaster) {
 
@@ -46,6 +46,7 @@ if (MODE === "CLUSTER" && cluster.isMaster) {
     });
 
 } else {
+
     console.log(`Worker ${process.pid} started in mode ${MODE}`);
 
     /* ------ Socket.io ------ */
@@ -81,7 +82,7 @@ if (MODE === "CLUSTER" && cluster.isMaster) {
     app.use("/api/productos-test", sessionMiddleware, routerProductos);
     app.use("/", routerSesions);
     app.use("/", routerInfo);
-    app.use("/api", routerChildProcess);
+    app.use("/api", routerRandoms);
 
     app.get("*", (req, res) => {
         loggerWarn.warn(`Ruta: ${req.originalUrl} - Método: ${req.method} - No implementada`);

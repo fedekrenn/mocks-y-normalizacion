@@ -1,15 +1,12 @@
 const express = require('express');
+const products = require('../controller/products')
 const { Router } = express
-
-const ContenedorProductos = require('../class/Products')
-const manejadorProductos = new ContenedorProductos()
-
 const routerProductos = Router()
 
-routerProductos.get('/', async (req, res) => {
-    const productos = await manejadorProductos.getRandom()
 
-    res.json(productos)
-})
+
+routerProductos.get('/', products)
+
+
 
 module.exports = routerProductos
