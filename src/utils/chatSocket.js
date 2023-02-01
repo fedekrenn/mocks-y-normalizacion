@@ -1,19 +1,11 @@
-const ContenedorProductos = require("../persistence/class/Products");
 const ContenedorMensajes = require("../persistence/class/Messages");
-
-/* --- Instancias  ---- */
-
-const manejadorProductos = new ContenedorProductos();
-const manejadorMensajes = new ContenedorMensajes();
+const manejadorMensajes = ContenedorMensajes.getInstance();
 
 /* ------ Socket.io ------ */
 
 const listen = (io) => {
     io.on("connection", async (socket) => {
         console.log("Se conectó un nuevo cliente");
-
-        // Productos
-        socket.emit("productos", await manejadorProductos.getRandom());
 
         // Mensajes
         socket.emit("mensajes", await manejadorMensajes.getAll());

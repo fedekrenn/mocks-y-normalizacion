@@ -7,8 +7,6 @@ const spanName = document.getElementById('span-name');
 
 let nombre = '';
 
-// Formulario de mensajes
-
 newMsgForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -28,7 +26,6 @@ newMsgForm.addEventListener('submit', (e) => {
 
     e.target.chatMessage.value = '';
 
-    // Hacer foco en el input de mensaje
     e.target.chatMessage.focus();
 });
 
@@ -51,10 +48,9 @@ socket.on('mensajes', (data) => {
 
     console.log('Array sin normalización: ', arrayOfMsg)
 
-    // Invertir el array
     arrayOfMsg.reverse();
 
-    // Mostramos por consola la longitud de ambos arrays
+    // Mostramos por consola la longitud de ambos arrays para ver la diferencia de bytes
     const normalizedLength = JSON.stringify(data).length;
     const desnormalizedLenght = JSON.stringify(arrayOfMsg).length;
 
@@ -69,8 +65,7 @@ socket.on('mensajes', (data) => {
         :
         percentContainer.innerHTML = `<p>Porcentaje de compresión: ${percent}%</p>`;
 
-
-
+        
     arrayOfMsg.forEach(message => {
 
         const { author, text } = message;

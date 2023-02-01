@@ -1,6 +1,8 @@
 const { faker } = require('@faker-js/faker');
 const { loggerError } = require('../../utils/logger');
 
+let instance = null;
+
 class ContenedorProductos {
 
     async getRandom() {
@@ -19,6 +21,13 @@ class ContenedorProductos {
         } catch (error) {
             loggerError.error(error);
         }
+    }
+
+    static getInstance() {
+        if (!instance) {
+            instance = new ContenedorProductos();
+        }
+        return instance;
     }
 }
 

@@ -13,6 +13,8 @@ mongoose.connect(mongoConfig.host, {
     if (err) console.log(err);
 });
 
+let instance = null;
+
 class ContenedorMensajes {
 
     async save(msj) {
@@ -35,6 +37,14 @@ class ContenedorMensajes {
             loggerError.error(error);
         }
     }
+
+    static getInstance() {
+        if (!instance) {
+            instance = new ContenedorMensajes();
+        }
+        return instance;
+    }
+
 }
 
 module.exports = ContenedorMensajes;
