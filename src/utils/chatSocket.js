@@ -1,5 +1,4 @@
-const ContenedorMensajes = require("../persistence/class/Messages");
-const manejadorMensajes = ContenedorMensajes.getInstance();
+const manejadorMensajes = require("../persistence/class/messagesHandler")
 
 /* ------ Socket.io ------ */
 
