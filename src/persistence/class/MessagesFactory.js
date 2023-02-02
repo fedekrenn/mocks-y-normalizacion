@@ -5,19 +5,20 @@ const args = yargs
   .alias({ persitence: "o" }).argv;
 
 const PERSISTENCE = args.persitence.toUpperCase();
+console.log("Persistence: ", PERSISTENCE);
 
 let handleMessages;
 
 switch (PERSISTENCE) {
   case "MONGO":
-    const ContenedorMensajesMongo = require("../class/messagesDao/MessagesMongo");
+    const ContenedorMensajesMongo = require("./messagesDao/MessagesMongo");
     handleMessages = ContenedorMensajesMongo.getInstance();
 
     logger.info("Persistence: Mongo");
     break;
 
   case "MEMORY":
-    const ContenedorMensajesMemory = require("../class/messagesDao/MessagesMemory");
+    const ContenedorMensajesMemory = require("./messagesDao/MessagesMemory");
     handleMessages = ContenedorMensajesMemory.getInstance();
 
     logger.info("Persistence: Memory");
@@ -28,4 +29,10 @@ switch (PERSISTENCE) {
     break;
 }
 
-module.exports = handleMessages;
+class MessagesFactory {
+  static getDao() {
+    return handleMessages;
+  }
+}
+
+module.exports = MessagesFactory;

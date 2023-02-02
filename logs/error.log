@@ -172,3 +172,4 @@
     at ContenedorMensajes.getAll (C:\Users\fedek\Desktop\codigo\mocks-y-normalizacion\src\persistence\class\messagesDao\MessagesMongo.js:46:51)
     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
     at async Namespace.<anonymous> (C:\Users\fedek\Desktop\codigo\mocks-y-normalizacion\src\utils\chatSocket.js:10:33)
+[2023-02-02T17:28:17.445] [ERROR] error - Hubo un intento de acceso no autorizado

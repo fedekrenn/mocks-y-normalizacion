@@ -10,16 +10,12 @@ class ContenedorMensajes {
   }
 
   async save(msj) {
+    const { author, text } = msj;
+    const { id, nombre, apellido, edad, alias, avatar } = author;
+
     try {
-      const author = new AuthorDTO(
-        msj.author.id,
-        msj.author.nombre,
-        msj.author.apellido,
-        msj.author.edad,
-        msj.author.alias,
-        msj.author.avatar
-      );
-      const message = new MessageDTO(author, msj.text);
+      const author = new AuthorDTO(id, nombre, apellido, edad, alias, avatar);
+      const message = new MessageDTO(author, text);
 
       this.mensajes.push(message);
       return { message: "Se guardó correctamente el mensaje" };

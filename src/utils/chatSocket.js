@@ -1,19 +1,19 @@
-const manejadorMensajes = require("../persistence/class/messagesHandler")
+const messageFactory = require("../persistence/class/MessagesFactory").getDao();
 
 /* ------ Socket.io ------ */
 
 const listen = (io) => {
-    io.on("connection", async (socket) => {
-        console.log("Se conectó un nuevo cliente");
+  io.on("connection", async (socket) => {
+    console.log("Se conectó un nuevo cliente");
 
-        // Mensajes
-        socket.emit("mensajes", await manejadorMensajes.getAll());
+    // Mensajes
+    socket.emit("mensajes", await messageFactory.getAll());
 
-        socket.on("new-message", async (mensaje) => {
-            await manejadorMensajes.save(mensaje);
-            io.sockets.emit("mensajes", await manejadorMensajes.getAll());
-        });
+    socket.on("new-message", async (msj) => {
+      await messageFactory.save(msj);
+      io.sockets.emit("mensajes", await messageFactory.getAll());
     });
+  });
 };
 
 module.exports = { listen };
