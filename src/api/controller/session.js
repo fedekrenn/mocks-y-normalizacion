@@ -1,4 +1,4 @@
-const { loggerError } = require("../utils/logger");
+const { loggerError } = require("../../utils/logger");
 const passport = require("passport");
 
 const mainRoute = async (req, res) => {

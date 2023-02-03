@@ -2,8 +2,6 @@ const mongoose = require("mongoose");
 const { mongoConfig } = require("../../../config/config");
 const { MensajesModel } = require("../../model/msgModel");
 const { loggerError } = require("../../../utils/logger");
-const { AuthorDTO, MessageDTO } = require("../messagesDto/MessageDTO");
-const normalizeMsgs = require("../../../utils/normalizr");
 
 mongoose.connect(
   mongoConfig.host,
@@ -19,15 +17,9 @@ mongoose.connect(
 let instance = null;
 
 class ContenedorMensajes {
-  async save(msj) {
-    const { author, text } = msj;
-    const { id, nombre, apellido, edad, alias, avatar } = author;
-
+  async save(msg) {
     try {
-      const author = new AuthorDTO(id, nombre, apellido, edad, alias, avatar);
-      const message = new MessageDTO(author, text);
-
-      const newMsg = new MensajesModel(message);
+      const newMsg = new MensajesModel(msg);
       await newMsg.save();
 
       return { message: "Se guardó correctamente el mensaje" };
@@ -38,9 +30,7 @@ class ContenedorMensajes {
 
   async getAll() {
     try {
-      const mensajes = await MensajesModel.find();
-
-      return normalizeMsgs(mensajes);
+      return await MensajesModel.find();
     } catch (error) {
       loggerError.error(error);
     }

@@ -11,14 +11,14 @@ let handleMessages;
 
 switch (PERSISTENCE) {
   case "MONGO":
-    const ContenedorMensajesMongo = require("./messagesDao/MessagesMongo");
+    const ContenedorMensajesMongo = require("../dao/messages/MessagesMongo");
     handleMessages = ContenedorMensajesMongo.getInstance();
 
     logger.info("Persistence: Mongo");
     break;
 
   case "MEMORY":
-    const ContenedorMensajesMemory = require("./messagesDao/MessagesMemory");
+    const ContenedorMensajesMemory = require("../dao/messages/MessagesMemory");
     handleMessages = ContenedorMensajesMemory.getInstance();
 
     logger.info("Persistence: Memory");
@@ -29,10 +29,4 @@ switch (PERSISTENCE) {
     break;
 }
 
-class MessagesFactory {
-  static getDao() {
-    return handleMessages;
-  }
-}
-
-module.exports = MessagesFactory;
+module.exports = handleMessages;

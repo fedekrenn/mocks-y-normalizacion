@@ -1,4 +1,4 @@
-const { loggerError } = require('../utils/logger');
+const { loggerError } = require('../../utils/logger');
 
 const sessionMiddleware = (req, res, next) => {
     if (req.isAuthenticated()) {

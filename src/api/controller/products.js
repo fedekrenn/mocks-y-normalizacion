@@ -1,4 +1,4 @@
-const ContenedorProductos = require('../persistence/class/Products')
+const ContenedorProductos = require('../../components/dao/products/Products')
 const manejadorProductos = ContenedorProductos.getInstance()
 
 const products = async (req, res) => {

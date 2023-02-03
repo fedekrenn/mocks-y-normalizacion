@@ -1,6 +1,4 @@
 const { loggerError } = require("../../../utils/logger");
-const { AuthorDTO, MessageDTO } = require("../messagesDto/MessageDTO");
-const normalizeMsgs = require("../../../utils/normalizr");
 
 let instance = null;
 
@@ -9,15 +7,9 @@ class ContenedorMensajes {
     this.mensajes = [];
   }
 
-  async save(msj) {
-    const { author, text } = msj;
-    const { id, nombre, apellido, edad, alias, avatar } = author;
-
+  async save(msg) {
     try {
-      const author = new AuthorDTO(id, nombre, apellido, edad, alias, avatar);
-      const message = new MessageDTO(author, text);
-
-      this.mensajes.push(message);
+      this.mensajes.push(msg);
       return { message: "Se guardó correctamente el mensaje" };
     } catch (err) {
       loggerError.error(err);
@@ -26,7 +18,7 @@ class ContenedorMensajes {
 
   async getAll() {
     try {
-      return normalizeMsgs(this.mensajes);
+      return this.mensajes;
     } catch (error) {
       loggerError.error(error);
     }

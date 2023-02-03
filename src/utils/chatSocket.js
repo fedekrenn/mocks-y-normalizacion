@@ -1,4 +1,4 @@
-const messageFactory = require("../persistence/class/MessagesFactory").getDao();
+const messageRepository = require("../components/repository/MessagesRepository").getInstance();
 
 /* ------ Socket.io ------ */
 
@@ -7,11 +7,11 @@ const listen = (io) => {
     console.log("Se conectó un nuevo cliente");
 
     // Mensajes
-    socket.emit("mensajes", await messageFactory.getAll());
+    socket.emit("mensajes", await messageRepository.getAll());
 
     socket.on("new-message", async (msj) => {
-      await messageFactory.save(msj);
-      io.sockets.emit("mensajes", await messageFactory.getAll());
+      await messageRepository.save(msj);
+      io.sockets.emit("mensajes", await messageRepository.getAll());
     });
   });
 };

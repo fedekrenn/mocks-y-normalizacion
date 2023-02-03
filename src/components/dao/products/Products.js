@@ -1,5 +1,6 @@
 const { faker } = require("@faker-js/faker");
-const { loggerError } = require("../../utils/logger");
+const { loggerError } = require("../../../utils/logger");
+const ProductDTO = require("../../dto/ProductsDTO");
 
 let instance = null;
 
@@ -9,11 +10,12 @@ class ContenedorProductos {
       const productos = [];
 
       for (let i = 0; i < 5; i++) {
-        productos.push({
-          title: faker.commerce.productName(),
-          price: faker.commerce.price(),
-          thumbnail: faker.image.image(),
-        });
+        const producto = new ProductDTO(
+          faker.commerce.productName(),
+          faker.commerce.price(),
+          faker.image.image()
+        );
+        productos.push(producto);
       }
 
       return productos;

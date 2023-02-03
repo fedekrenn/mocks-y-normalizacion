@@ -1,14 +1,14 @@
 /* ---- Imports  ---- */
 const express = require("express");
 
-const routerProductos = require("./src/routes/productos");
-const routerSesions = require("./src/routes/sesion");
-const routerInfo = require("./src/routes/info");
-const routerRandoms = require("./src/routes/randoms");
+const routerProductos = require("./src/api/routes/productos");
+const routerSesions = require("./src/api/routes/sesion");
+const routerInfo = require("./src/api/routes/info");
+const routerRandoms = require("./src/api/routes/randoms");
 const passport = require("./src/utils/passport");
 const chat = require("./src/utils/chatSocket");
 
-const sessionMiddleware = require("./src/middlewares/session");
+const sessionMiddleware = require("./src/api/middlewares/session");
 
 const { sessionConfig } = require("./src/config/config");
 const { loggerWarn } = require("./src/utils/logger");

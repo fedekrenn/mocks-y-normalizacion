@@ -1,4 +1,4 @@
-const { logger } = require("../utils/logger");
+const { logger } = require("../../utils/logger");
 const args = require("yargs/yargs")(process.argv.slice(2)).argv;
 
 const getInfo = async (req, res) => {
