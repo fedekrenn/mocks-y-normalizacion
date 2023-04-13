@@ -1,22 +1,25 @@
-const { normalize, schema } = require('normalizr')
+const { normalize, schema } = require("normalizr");
 
 function normalizeMsgs(msgs) {
-
   const chatMsgs = msgs.map((msg) => {
     return {
       author: msg.author,
-      text: msg.text
-    }
-  })
+      text: msg.text,
+    };
+  });
 
-  const authorSchema = new schema.Entity('author', {}, { idAttribute: 'id' });
+  const authorSchema = new schema.Entity("author", {}, { idAttribute: "id" });
 
-  const mensajeSchema = new schema.Entity('messages', {
-    author: authorSchema
-  }, {idAttribute: "text"})
+  const mensajeSchema = new schema.Entity(
+    "messages",
+    {
+      author: authorSchema,
+    },
+    { idAttribute: "text" }
+  );
 
   const normalizedData = normalize(chatMsgs, [mensajeSchema]);
   return normalizedData;
 }
 
-module.exports = normalizeMsgs
+module.exports = normalizeMsgs;

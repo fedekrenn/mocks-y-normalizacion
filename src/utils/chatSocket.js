@@ -1,4 +1,5 @@
-const messageRepository = require("../components/repository/MessagesRepository").getInstance();
+const messageRepository =
+  require("../components/repository/MessagesRepository").getInstance();
 
 /* ------ Socket.io ------ */
 

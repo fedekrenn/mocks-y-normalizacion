@@ -1,1 +1,3 @@
 [2023-01-25T17:48:23.932] [WARN] warn - Ruta: /pages/noexiste - Método: GET - No implementada
+[2023-04-13T18:04:07.982] [WARN] warn - Ruta: /favicon.ico - Método: GET - No implementada
+[2023-04-13T18:11:16.075] [WARN] warn - Ruta: /favicon.ico - Método: GET - No implementada

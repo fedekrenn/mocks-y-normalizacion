@@ -1,16 +1,16 @@
 const log4js = require("log4js");
 
 log4js.configure({
-    appenders: {
-        console: { type: "console" },
-        fileWarn: { type: "file", filename: "logs/warn.log" },
-        fileError: { type: "file", filename: "logs/error.log" },
-    },
-    categories: {
-        default: { appenders: ["console"], level: "info" },
-        warn: { appenders: ["fileWarn", "console"], level: "warn" },
-        error: { appenders: ["fileError", "console"], level: "error" },
-    },
+  appenders: {
+    console: { type: "console" },
+    fileWarn: { type: "file", filename: "logs/warn.log" },
+    fileError: { type: "file", filename: "logs/error.log" },
+  },
+  categories: {
+    default: { appenders: ["console"], level: "info" },
+    warn: { appenders: ["fileWarn", "console"], level: "warn" },
+    error: { appenders: ["fileError", "console"], level: "error" },
+  },
 });
 
 const logger = log4js.getLogger();
